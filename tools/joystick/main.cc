@@ -1,9 +1,8 @@
-#include <thread>
 #include <iostream>
-
-#include "tools/joystick/conduit_joystick.h"
+#include <thread>
 
 #include "common/params.h"
+#include "tools/joystick/conduit_joystick.h"
 
 void joystick_thread_callback(ConduitJoystick* joystick) {
   while (true) {
@@ -34,6 +33,8 @@ std::thread pub_thread(PubSocket* pub_sock, ConduitJoystick* joystick) {
 }
 
 int main() {
+  Params().putBool("testJoystick", true);
+
   ConduitJoystick* joystick = new ConduitJoystick(0);
   Context* c = Context::create();
   PubSocket* pub_sock = PubSocket::create(c, "testJoystick");
@@ -41,7 +42,9 @@ int main() {
   std::thread jt = joystick_thread(joystick);
   std::thread pt = pub_thread(pub_sock, joystick);
 
-  Params().putBool("testJoystick", true);
+  if (!Params().getBool("IsOffroad")) {
+    std::cout << "Car must be offroad" << std::endl;
+  }
 
   jt.join();
   pt.join();

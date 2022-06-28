@@ -582,9 +582,11 @@ class Controls:
       lac_log = log.ControlsState.LateralDebugState.new_message()
       if self.sm.rcv_frame['testJoystick'] > 0:
         if CC.longActive:
+          print(f"GB: {self.sm['testJoystick'].axes[0]}")
           actuators.accel = 4.0*clip(self.sm['testJoystick'].axes[0], -1, 1)
 
         if CC.latActive:
+          print(f"Steer: {self.sm['testJoystick'].axes[1]}")
           steer = clip(self.sm['testJoystick'].axes[1], -1, 1)
           # max angle is 45 for angle-based cars
           actuators.steer, actuators.steeringAngleDeg = steer, steer * 45.
