@@ -1,0 +1,11 @@
+Import('env', 'messaging', 'common', 'cereal')
+
+env = env.Clone()
+env.Append(CPPPATH=['/usr/include/SDL2'])
+
+libs = [cereal, messaging, common, 'zmq', 'capnp', 'SDL2', 'pthread']
+
+env.Program('joystick', [
+    'main.cc',
+    'conduit_joystick.cc',
+], LIBS=libs)

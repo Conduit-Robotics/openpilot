@@ -291,21 +291,21 @@ class Controls:
     # All events here should at least have NO_ENTRY and SOFT_DISABLE.
     num_events = len(self.events)
 
-    not_running = {p.name for p in self.sm['managerState'].processes if not p.running and p.shouldBeRunning}
-    if self.sm.rcv_frame['managerState'] and (not_running - IGNORE_PROCESSES):
-      self.events.add(EventName.processNotRunning)
-    else:
-      if not SIMULATION and not self.rk.lagging:
-        if not self.sm.all_alive(self.camera_packets):
-          self.events.add(EventName.cameraMalfunction)
-        elif not self.sm.all_freq_ok(self.camera_packets):
-          self.events.add(EventName.cameraFrameRate)
-    if self.rk.lagging:
-      self.events.add(EventName.controlsdLagging)
-    if len(self.sm['radarState'].radarErrors):
-      self.events.add(EventName.radarFault)
-    if not self.sm.valid['pandaStates']:
-      self.events.add(EventName.usbError)
+    # not_running = {p.name for p in self.sm['managerState'].processes if not p.running and p.shouldBeRunning}
+    # if self.sm.rcv_frame['managerState'] and (not_running - IGNORE_PROCESSES):
+    #   self.events.add(EventName.processNotRunning)
+    # else:
+    #   if not SIMULATION and not self.rk.lagging:
+    #     if not self.sm.all_alive(self.camera_packets):
+    #       self.events.add(EventName.cameraMalfunction)
+    #     elif not self.sm.all_freq_ok(self.camera_packets):
+    #       self.events.add(EventName.cameraFrameRate)
+    # if self.rk.lagging:
+    #   self.events.add(EventName.controlsdLagging)
+    # if len(self.sm['radarState'].radarErrors):
+    #   self.events.add(EventName.radarFault)
+    # if not self.sm.valid['pandaStates']:
+    #   self.events.add(EventName.usbError)
 
     # generic catch-all. ideally, a more specific event should be added above instead
     no_system_errors = len(self.events) != num_events
@@ -331,8 +331,8 @@ class Controls:
 
     if not self.sm['liveParameters'].valid:
       self.events.add(EventName.vehicleModelInvalid)
-    if not self.sm['lateralPlan'].mpcSolutionValid:
-      self.events.add(EventName.plannerError)
+    # if not self.sm['lateralPlan'].mpcSolutionValid:
+    #   self.events.add(EventName.plannerError)
     if not self.sm['liveLocationKalman'].sensorsOK and not NOSENSOR:
       if self.sm.frame > 5 / DT_CTRL:  # Give locationd some time to receive all the inputs
         self.events.add(EventName.sensorDataInvalid)
@@ -816,7 +816,7 @@ class Controls:
       self.prof.display()
 
 def main(sm=None, pm=None, logcan=None):
-  controls = Controls(sm, pm, logcan)
+  controls = Controls(sm, pm, logcan) 
   controls.controlsd_thread()
 
 

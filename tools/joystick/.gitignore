@@ -1,0 +1,6 @@
+*.o
+*.os
+*.d
+*.a
+*.so
+joystick

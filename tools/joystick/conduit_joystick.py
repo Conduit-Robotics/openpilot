@@ -72,7 +72,7 @@ def pub_thread(joystick: Joystick) -> None:
     dat.testJoystick.axes = [joystick.gas_brake, joystick.steer]
     dat.testJoystick.buttons = [False]
     pub.send(dat.to_bytes())
-    print(f'STEER: {joystick.steer}\nGB: {joystick.gas_brake}')
+    print(f'STEER: {joystick.steer}   GB: {joystick.gas_brake}  G: {joystick.gas}   B: {joystick.brake}')
     rk.keep_time()
 
 def main() -> None:
