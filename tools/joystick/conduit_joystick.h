@@ -21,6 +21,7 @@ class ConduitJoystick {
   SDL_Haptic* haptic_{nullptr};
 
   void initializeJoystick();
+  void initializeHaptic();
   void onSteer(const SDL_Event& event);
   void onGas(const SDL_Event& event);
   void onBrake(const SDL_Event& event);

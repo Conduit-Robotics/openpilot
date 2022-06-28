@@ -8,6 +8,7 @@ namespace {
 float constexpr kDeadZone = 0.05;
 float constexpr kJoyMaxVal = 32767.0;
 float constexpr kJoyMinVal = -32768.0;
+int constexpr kAutoCenter = 50;
 
 float interp(float xv, std::array<float, 2> xp, std::array<float, 2> fp) {
   int N = 2;
@@ -35,6 +36,7 @@ float normalize_sdl_values(float x) {
 ConduitJoystick::ConduitJoystick(int dev_id) {
   dev_id_ = dev_id;
   initializeJoystick();
+  initializeHaptic();
 }
 
 ConduitJoystick::~ConduitJoystick() {
@@ -47,6 +49,14 @@ ConduitJoystick::~ConduitJoystick() {
     SDL_HapticClose(haptic_);
   }
   SDL_Quit();
+}
+
+void ConduitJoystick::initializeHaptic() {
+  haptic_ = SDL_HapticOpenFromJoystick(joystick_);
+  if (haptic_ == nullptr) {
+    printf("Unable to create force feedback: %s", SDL_GetError());
+  }
+  SDL_HapticSetAutocenter(haptic_, kAutoCenter);
 }
 
 void ConduitJoystick::initializeJoystick() {
